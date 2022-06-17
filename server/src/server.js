@@ -17,7 +17,14 @@ app.post("/linewebhook", line.middleware(config), (req, res) => {
 });
 
 app.post("/eswebhook", line.middleware(config), (req, res, next) => {
-  client.broadcast("eswebhook").then((_result) => console.log);
+  client
+    .broadcast("eswebhook")
+    .then((result) => {
+      console.log("result!!", result);
+    })
+    .catch((err) => {
+      console.log("errorr!", err);
+    });
 });
 
 app.get("/test", (req, res, next) => {
