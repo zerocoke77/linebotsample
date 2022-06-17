@@ -8,6 +8,8 @@ const config = {
 };
 
 const app = express();
+const client = new line.Client(config);
+
 app.post("/linewebhook", line.middleware(config), (req, res) => {
   Promise.all(req.body.events.map(handleEvent)).then((result) =>
     res.json(result)
@@ -15,19 +17,19 @@ app.post("/linewebhook", line.middleware(config), (req, res) => {
 });
 
 app.post("/eswebhook", (req, res, next) => {
-  console.log(req.body);
+  client.broadcast("eswebhook");
 });
 
 app.get("/test", (req, res, next) => {
   console.log("test");
 });
 
-const client = new line.Client(config);
 function handleEvent(event) {
   if (event.type !== "message" || event.message.type !== "text") {
     return Promise.resolve(null);
   }
 
+  console.log("event.message.text", event.message.text);
   return client.replyMessage(event.replyToken, {
     type: "text",
     text: event.message.text,
