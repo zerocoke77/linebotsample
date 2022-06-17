@@ -17,14 +17,10 @@ app.post("/linewebhook", line.middleware(config), (req, res) => {
 });
 
 app.post("/eswebhook", (req, res, next) => {
-  client
-    .broadcast("eswebhook")
-    .then((result) => {
-      console.log("result!!", result);
-    })
-    .catch((err) => {
-      console.log("errorr!", err);
-    });
+  client.pushMessage("16275918179405", {
+    type: "text",
+    text: "message from es webhook",
+  });
 });
 
 app.get("/test", (req, res, next) => {
@@ -37,10 +33,10 @@ function handleEvent(event) {
   }
 
   console.log("event.message.text", event.message.text);
-  return client.replyMessage(event.replyToken, {
-    type: "text",
-    text: event.message.text,
-  });
+  // return client.replyMessage(event.replyToken, {
+  //   type: "text",
+  //   text: event.message.text,
+  // });
 }
 
 app.listen(3000, (err) => {
