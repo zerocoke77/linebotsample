@@ -17,8 +17,8 @@ app.post("/linewebhook", line.middleware(config), (req, res) => {
   );
 });
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.post("/eswebhook", (req, res, next) => {
   console.log("req", Object.keys(req));
