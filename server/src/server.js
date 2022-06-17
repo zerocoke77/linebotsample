@@ -1,6 +1,7 @@
 const express = require("express");
 const line = require("@line/bot-sdk");
 const util = require("util");
+const morgan = require("morgan");
 require("dotenv").config();
 
 const config = {
@@ -9,6 +10,7 @@ const config = {
 };
 
 const app = express();
+app.use(morgan("dev"));
 const client = new line.Client(config);
 
 app.post("/linewebhook", line.middleware(config), (req, res) => {
