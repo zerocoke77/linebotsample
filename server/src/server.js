@@ -1,5 +1,6 @@
 const express = require("express");
 const line = require("@line/bot-sdk");
+const util = require("util");
 require("dotenv").config();
 
 const config = {
@@ -16,8 +17,19 @@ app.post("/linewebhook", line.middleware(config), (req, res) => {
   );
 });
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.post("/eswebhook", (req, res, next) => {
-  client.pushMessage("16275918179405", {
+  console.log("req", Object.keys(req));
+  console.log(
+    util.inspect(req.body, {
+      showHidden: false,
+      depth: null,
+      colors: true,
+    })
+  );
+  client.pushMessage("C04ebe16251810453bd89fb29f0979d8b", {
     type: "text",
     text: "message from es webhook",
   });
@@ -33,6 +45,7 @@ function handleEvent(event) {
   }
 
   console.log("event.message.text", event.message.text);
+  console.log("event", event);
   // return client.replyMessage(event.replyToken, {
   //   type: "text",
   //   text: event.message.text,
