@@ -1,0 +1,11 @@
+/var/log/nginx/*.log {
+  missingok
+  daily
+  maxsize 10M
+  rotate 10
+  nocompress
+  create 644 centos centos
+  postrotate
+    docker inspect -f '{{ .State.Pid }}' nginx | xargs kill -USR1
+  endscript
+}
