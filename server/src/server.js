@@ -16,7 +16,7 @@ app.post("/linewebhook", line.middleware(config), (req, res) => {
   );
 });
 
-app.post("/eswebhook", line.middleware(config), (req, res, next) => {
+app.post("/eswebhook", (req, res, next) => {
   client
     .broadcast("eswebhook")
     .then((result) => {
