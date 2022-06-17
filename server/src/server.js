@@ -23,18 +23,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.post("/eswebhook", (req, res, next) => {
-  console.log("req", Object.keys(req));
-  console.log(
-    util.inspect(req.body, {
-      showHidden: false,
-      depth: null,
-      colors: true,
-    })
-  );
+  const { title, messages } = req.body;
+  const text =
+    title +
+    "\n" +
+    messages.reduce((acc, cur) => {
+      return acc + "\n" + cur;
+    });
+
   client.pushMessage("C04ebe16251810453bd89fb29f0979d8b", {
     type: "text",
-    text: "message from es webhook",
+    text,
   });
+  return;
 });
 
 app.get("/test", (req, res, next) => {
