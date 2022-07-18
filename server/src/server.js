@@ -17,6 +17,7 @@ app.post("/eswebhook", (req, res, next) => {
       colors: true,
     })
   );
+  return res.status(200).end();
 });
 
 app.listen(3000, (err) => {
