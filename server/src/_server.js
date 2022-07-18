@@ -5,16 +5,19 @@ require("dotenv").config();
 
 const app = express();
 app.use(morgan("dev"));
-const client = new line.Client(config);
 
-app.post("/linewebhook", line.middleware(config), (req, res) => {
-  Promise.all(req.body.events.map(handleEvent)).then((result) =>
-    res.json(result)
-  );
-});
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.post("/eswebhook", (req, res, next) => {
-  const { title, messages } = req.body;
+  console.log(
+    util.inspect(req.body, {
+      showHidden: false,
+      depth: null,
+      colors: true,
+    })
+  );
+
   // const text =
   //   title +
   //   "\n" +
@@ -26,25 +29,8 @@ app.post("/eswebhook", (req, res, next) => {
   //   type: "text",
   //   text,
   // });
-  return;
+  // return;
 });
-
-app.get("/test", (req, res, next) => {
-  console.log("test");
-});
-
-function handleEvent(event) {
-  if (event.type !== "message" || event.message.type !== "text") {
-    return Promise.resolve(null);
-  }
-
-  console.log("event.message.text", event.message.text);
-  console.log("event", event);
-  // return client.replyMessage(event.replyToken, {
-  //   type: "text",
-  //   text: event.message.text,
-  // });
-}
 
 app.listen(3000, (err) => {
   console.log(`
