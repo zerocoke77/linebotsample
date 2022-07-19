@@ -3,13 +3,13 @@ const util = require("util");
 const morgan = require("morgan");
 const axios = require("axios");
 const FormData = require("form-data");
+const qs = require("querystring");
 require("dotenv").config();
 
 axios.defaults.baseURL = "https://notify-api.line.me/api/notify";
 axios.defaults.headers.common[
   "Authorization"
 ] = `Bearer ${process.env.ACCESS_TOKEN}`;
-axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
 const axiosInstance = axios.create();
 
 const app = express();
@@ -29,11 +29,19 @@ app.post("/eswebhook", async (req, res, next) => {
   //   })
   // );
 
-  const data = new FormData();
-  data.append("message", "haha");
+  const data = {
+    message: "hihi",
+  };
+
+  const options = {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
   try {
-    await axiosInstance.post("/", data);
+    await axiosInstance.post("/", qs.stringify(data), options);
   } catch (e) {
     console.log(e);
   }
